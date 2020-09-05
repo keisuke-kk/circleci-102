@@ -11,6 +11,11 @@ jobs:
         key: v1 -repo-{{ .Environment.CIRCLE_SHA1 }}
         paths:
           - ~/circleci-demo-workflows
+    steps:
+      - persist_to_workspace:
+        root: workspace
+        paths:
+          - echo-output
 
   build2:
     docker:
@@ -23,6 +28,10 @@ jobs:
       - run:
         name: テストの実行
         command: make test
+    steps:
+      - attach_workspace:
+        at: /tmp/workspace
+        
   build3:
     docker:
       - image: circleci/ruby:2.4-node
@@ -33,6 +42,10 @@ jobs:
       - run:
         name: アセットのプリコンパイル
         command: bundle exec rake assets:precompile
+    steps:
+      - store_artifacts:
+        path: /tmp/artifact-1
+        destination: artifact-file
         
 workflows:
   version: 2
