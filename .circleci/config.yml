@@ -10,7 +10,6 @@ jobs:
           key: v1-repo-{{ .Environment.CIRCLE_SHA1 }}
           paths:
             - ~/circleci-demo-workflows
-    steps:
       - persist_to_workspace:
           root: workspace
           paths:
